@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyecto de Vida</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out;
+        }
+        
+        .loader-content {
+            text-align: center;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #0f0;
+            border-top: 5px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .loader-text {
+            color: #0f0;
+            font-size: 18px;
+            letter-spacing: 2px;
+        }
+        
+        .content {
+            display: none;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .main-title {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 20px;
+            position: relative;
+        }
+        
+        .name {
+            font-size: 36px;
+            color: #0f0;
+            margin-bottom: 10px;
+            letter-spacing: 3px;
+        }
+        
+        .title {
+            font-size: 24px;
+            font-weight: 300;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+        }
+        
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .card {
+            background-color: #111;
+            border-left: 3px solid #0f0;
+            padding: 25px;
+            border-radius: 5px;
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-title {
+            color: #0f0;
+            font-size: 20px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #333;
+        }
+        
+        .card-content {
+            line-height: 1.6;
+            color: #ccc;
+        }
+        
+        .card-content ul {
+            list-style-type: none;
+            padding-left: 10px;
+        }
+        
+        .card-content li {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .card-content li:before {
+            content: "■";
+            color: #0f0;
+            position: absolute;
+            left: 0;
+            font-size: 12px;
+        }
+        
+        @media (max-width: 768px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .name {
+                font-size: 28px;
+            }
+            
+            .title {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="loader">
+        <div class="loader-content">
+            <div class="spinner"></div>
+            <div class="loader-text">CARGANDO PROYECTO DE VIDA</div>
+        </div>
+    </div>
+    
+    <div class="content">
+        <div class="main-title">
+            <h1 class="name">MARÍA GARCÍA</h1>
+            <h2 class="title">Proyecto de vida</h2>
+        </div>
+        
+        <div class="grid-container">
+            <div class="card">
+                <h3 class="card-title">Metas a corto y largo plazo</h3>
+                <div class="card-content">
+                    <ul>
+                        <li><strong>Corto plazo (1-2 años):</strong> Graduarme con honores, mejorar mi inglés avanzado, conseguir prácticas profesionales.</li>
+                        <li><strong>Mediano plazo (3-5 años):</strong> Obtener mi primer empleo en mi área, comenzar una maestría, viajar para ampliar perspectivas.</li>
+                        <li><strong>Largo plazo (5-10 años):</strong> Liderar proyectos innovadores, tener estabilidad financiera, contribuir a mi comunidad.</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3 class="card-title">¿Para qué quiero estudiar una carrera?</h3>
+                <div class="card-content">
+                    <p>Decidí estudiar Ingeniería en Sistemas porque:</p>
+                    <ul>
+                        <li>Me apasiona resolver problemas complejos mediante la tecnología</li>
+                        <li>Quiero contribuir al desarrollo de soluciones innovadoras</li>
+                        <li>Deseo tener las herramientas para crear un impacto positivo en la sociedad</li>
+                        <li>Busco comprender el funcionamiento del mundo digital actual</li>
+                        <li>Aspiro a tener un campo laboral amplio y en constante evolución</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3 class="card-title">Resultados del test de habilidades</h3>
+                <div class="card-content">
+                    <ul>
+                        <li><strong>Pensamiento analítico:</strong> 90%</li>
+                        <li><strong>Resolución de problemas:</strong> 85%</li>
+                        <li><strong>Creatividad:</strong> 80%</li>
+                        <li><strong>Trabajo en equipo:</strong> 75%</li>
+                        <li><strong>Comunicación:</strong> 70%</li>
+                        <li><strong>Gestión del tiempo:</strong> 65%</li>
+                    </ul>
+                    <p>Áreas a mejorar: Oratoria y negociación</p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3 class="card-title">Temperamento: Fortalezas y Debilidades</h3>
+                <div class="card-content">
+                    <p><strong>Fortalezas:</strong></p>
+                    <ul>
+                        <li>Persistente en alcanzar objetivos</li>
+                        <li>Capacidad de análisis profundo</li>
+                        <li>Aprendizaje rápido en áreas de interés</li>
+                    </ul>
+                    
+                    <p><strong>Debilidades:</strong></p>
+                    <ul>
+                        <li>Perfeccionismo que puede ralentizar proyectos</li>
+                        <li>Dificultad para delegar tareas</li>
+                        <li>Reservada en ambientes nuevos</li>
+                    </ul>
+                    
+                    <p><strong>Pautas para autoeducarse:</strong> Establecer horarios definidos para estudio, practicar la enseñanza a otros para reforzar conocimiento, buscar proyectos prácticos que complementen la teoría.</p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3 class="card-title">Resultados del test de intereses y aptitudes</h3>
+                <div class="card-content">
+                    <p><strong>Intereses principales:</strong></p>
+                    <ul>
+                        <li>Investigación y desarrollo tecnológico</li>
+                        <li>Arte digital y diseño</li>
+                        <li>Sostenibilidad ambiental</li>
+                        <li>Emprendimiento social</li>
+                    </ul>
+                    
+                    <p><strong>Aptitudes destacadas:</strong></p>
+                    <ul>
+                        <li>Razonamiento lógico-matemático</li>
+                        <li>Capacidad de abstracción</li>
+                        <li>Visualización espacial</li>
+                        <li>Adaptabilidad a nuevos entornos</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3 class="card-title">Resultados del test de personalidad</h3>
+                <div class="card-content">
+                    <p><strong>Tipo de personalidad:</strong> INTJ - "Arquitecto"</p>
+                    <ul>
+                        <li>Estratega orientada a visiones a largo plazo</li>
+                        <li>Valora el conocimiento y la competencia</li>
+                        <li>Independiente y decidida</li>
+                        <li>Prefiere trabajar con planificación estructurada</li>
+                    </ul>
+                    
+                    <p><strong>Entornos ideales de trabajo:</strong> Proyectos desafiantes con autonomía, espacios que valoren la innovación, ambientes organizados y con objetivos claros.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simular carga de página
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.querySelector('.loader').style.opacity = '0';
+                document.querySelector('.content').style.display = 'block';
+                
+                setTimeout(function() {
+                    document.querySelector('.loader').style.display = 'none';
+                }, 500);
+            }, 2000); // Tiempo de carga simulado de 2 segundos
+        });
+    </script>
+</body>
+</html>
