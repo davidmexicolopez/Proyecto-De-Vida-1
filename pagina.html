@@ -1,282 +1,206 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proyecto de Vida</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background-color: #000;
-            color: #fff;
-            overflow-x: hidden;
-        }
-        
-        .loader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.5s ease-out;
-        }
-        
-        .loader-content {
-            text-align: center;
-        }
-        
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid #0f0;
-            border-top: 5px solid transparent;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .loader-text {
-            color: #0f0;
-            font-size: 18px;
-            letter-spacing: 2px;
-        }
-        
-        .content {
-            display: none;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-        
-        .main-title {
-            text-align: center;
-            margin-bottom: 60px;
-            padding: 20px;
-            position: relative;
-        }
-        
-        .name {
-            font-size: 36px;
-            color: #0f0;
-            margin-bottom: 10px;
-            letter-spacing: 3px;
-        }
-        
-        .title {
-            font-size: 24px;
-            font-weight: 300;
-            letter-spacing: 5px;
-            text-transform: uppercase;
-        }
-        
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 40px;
-        }
-        
-        .card {
-            background-color: #111;
-            border-left: 3px solid #0f0;
-            padding: 25px;
-            border-radius: 5px;
-            transition: transform 0.3s ease;
-        }
-        
-        .card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .card-title {
-            color: #0f0;
-            font-size: 20px;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #333;
-        }
-        
-        .card-content {
-            line-height: 1.6;
-            color: #ccc;
-        }
-        
-        .card-content ul {
-            list-style-type: none;
-            padding-left: 10px;
-        }
-        
-        .card-content li {
-            margin-bottom: 10px;
-            padding-left: 20px;
-            position: relative;
-        }
-        
-        .card-content li:before {
-            content: "■";
-            color: #0f0;
-            position: absolute;
-            left: 0;
-            font-size: 12px;
-        }
-        
-        @media (max-width: 768px) {
-            .grid-container {
-                grid-template-columns: 1fr;
-            }
-            
-            .name {
-                font-size: 28px;
-            }
-            
-            .title {
-                font-size: 18px;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proyecto de Vida - David Adolfo López Huerta</title>
+<style>
+  :root {
+    --bg-dark: #060606;
+    --bg-light: #0d1a0f;
+    --accent: #00ff88;
+    --muted: #d1d5db;
+    --glass: rgba(255,255,255,0.06);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body, html { height:100%; font-family: Arial, sans-serif; overflow-x:hidden; }
+
+  /* Fondo con parallax */
+  body {
+    background: url('https://picsum.photos/1600/900?blur=3') no-repeat center center fixed;
+    background-size: cover;
+  }
+
+  .overlay {
+    position: fixed; inset:0;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(4px);
+    z-index: -1;
+  }
+
+  /* Loader */
+  .loader {
+    position: fixed; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    background: black; z-index:10000;
+    flex-direction:column;
+    transition: opacity .6s ease, visibility .6s ease;
+  }
+  .loader.hidden { opacity:0; visibility:hidden; }
+  .spinner {
+    border:6px solid rgba(0,255,136,0.2);
+    border-top:6px solid var(--accent);
+    border-radius:50%; width:60px; height:60px;
+    animation:spin 1s linear infinite;
+  }
+  @keyframes spin { to { transform:rotate(360deg);} }
+  .loader p { color:var(--accent); margin-top:12px; font-weight:bold; }
+
+  /* Escenario */
+  .stage {
+    display:flex; align-items:center; justify-content:center;
+    height:100vh; position:relative; padding:20px;
+  }
+
+  .center {
+    position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+    width:220px; height:220px; border-radius:50%;
+    background:var(--glass); backdrop-filter: blur(8px);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; border:1px solid rgba(255,255,255,0.1);
+    box-shadow:0 10px 30px rgba(0,0,0,0.7);
+  }
+  .center h1 { color:var(--accent); font-size:20px; letter-spacing:1px; }
+  .center h2 { color:white; font-size:14px; margin-top:8px; font-weight:normal; }
+
+  .ring {
+    position:absolute; left:50%; top:50%;
+    transform:translate(-50%,-50%);
+    width:600px; height:600px;
+    border-radius:50%;
+  }
+
+  .island {
+    --size: 200px;
+    position:absolute; width:var(--size); height:var(--size);
+    background:var(--glass); border-radius:16px;
+    backdrop-filter: blur(6px);
+    padding:14px; overflow:auto;
+    border:1px solid rgba(255,255,255,0.1);
+    box-shadow:0 6px 20px rgba(0,0,0,0.6);
+    color:white; font-size:13px;
+  }
+  .island h3 { color:var(--accent); margin-bottom:6px; font-size:14px; }
+
+  /* Posicionamiento circular */
+  .ring .island:nth-child(1) { transform: rotate(-90deg) translate(0,-300px) rotate(90deg); }
+  .ring .island:nth-child(2) { transform: rotate(-30deg) translate(0,-300px) rotate(30deg); }
+  .ring .island:nth-child(3) { transform: rotate(30deg) translate(0,-300px) rotate(-30deg); }
+  .ring .island:nth-child(4) { transform: rotate(90deg) translate(0,-300px) rotate(-90deg); }
+  .ring .island:nth-child(5) { transform: rotate(150deg) translate(0,-300px) rotate(-150deg); }
+  .ring .island:nth-child(6) { transform: rotate(210deg) translate(0,-300px) rotate(-210deg); }
+
+  /* Responsive */
+  @media(max-width:768px){
+    .ring{ position:relative; width:100%; height:auto; transform:none; display:flex; flex-wrap:wrap; justify-content:center; gap:12px; }
+    .ring .island{ position:relative; transform:none; width:45%; height:auto; }
+    .center{ position:relative; transform:none; margin-bottom:20px; }
+  }
+</style>
 </head>
 <body>
-    <div class="loader">
-        <div class="loader-content">
-            <div class="spinner"></div>
-            <div class="loader-text">CARGANDO PROYECTO DE VIDA</div>
-        </div>
-    </div>
-    
-    <div class="content">
-        <div class="main-title">
-            <h1 class="name">MARÍA GARCÍA</h1>
-            <h2 class="title">Proyecto de vida</h2>
-        </div>
-        
-        <div class="grid-container">
-            <div class="card">
-                <h3 class="card-title">Metas a corto y largo plazo</h3>
-                <div class="card-content">
-                    <ul>
-                        <li><strong>Corto plazo (1-2 años):</strong> Graduarme con honores, mejorar mi inglés avanzado, conseguir prácticas profesionales.</li>
-                        <li><strong>Mediano plazo (3-5 años):</strong> Obtener mi primer empleo en mi área, comenzar una maestría, viajar para ampliar perspectivas.</li>
-                        <li><strong>Largo plazo (5-10 años):</strong> Liderar proyectos innovadores, tener estabilidad financiera, contribuir a mi comunidad.</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="card">
-                <h3 class="card-title">¿Para qué quiero estudiar una carrera?</h3>
-                <div class="card-content">
-                    <p>Decidí estudiar Ingeniería en Sistemas porque:</p>
-                    <ul>
-                        <li>Me apasiona resolver problemas complejos mediante la tecnología</li>
-                        <li>Quiero contribuir al desarrollo de soluciones innovadoras</li>
-                        <li>Deseo tener las herramientas para crear un impacto positivo en la sociedad</li>
-                        <li>Busco comprender el funcionamiento del mundo digital actual</li>
-                        <li>Aspiro a tener un campo laboral amplio y en constante evolución</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="card">
-                <h3 class="card-title">Resultados del test de habilidades</h3>
-                <div class="card-content">
-                    <ul>
-                        <li><strong>Pensamiento analítico:</strong> 90%</li>
-                        <li><strong>Resolución de problemas:</strong> 85%</li>
-                        <li><strong>Creatividad:</strong> 80%</li>
-                        <li><strong>Trabajo en equipo:</strong> 75%</li>
-                        <li><strong>Comunicación:</strong> 70%</li>
-                        <li><strong>Gestión del tiempo:</strong> 65%</li>
-                    </ul>
-                    <p>Áreas a mejorar: Oratoria y negociación</p>
-                </div>
-            </div>
-            
-            <div class="card">
-                <h3 class="card-title">Temperamento: Fortalezas y Debilidades</h3>
-                <div class="card-content">
-                    <p><strong>Fortalezas:</strong></p>
-                    <ul>
-                        <li>Persistente en alcanzar objetivos</li>
-                        <li>Capacidad de análisis profundo</li>
-                        <li>Aprendizaje rápido en áreas de interés</li>
-                    </ul>
-                    
-                    <p><strong>Debilidades:</strong></p>
-                    <ul>
-                        <li>Perfeccionismo que puede ralentizar proyectos</li>
-                        <li>Dificultad para delegar tareas</li>
-                        <li>Reservada en ambientes nuevos</li>
-                    </ul>
-                    
-                    <p><strong>Pautas para autoeducarse:</strong> Establecer horarios definidos para estudio, practicar la enseñanza a otros para reforzar conocimiento, buscar proyectos prácticos que complementen la teoría.</p>
-                </div>
-            </div>
-            
-            <div class="card">
-                <h3 class="card-title">Resultados del test de intereses y aptitudes</h3>
-                <div class="card-content">
-                    <p><strong>Intereses principales:</strong></p>
-                    <ul>
-                        <li>Investigación y desarrollo tecnológico</li>
-                        <li>Arte digital y diseño</li>
-                        <li>Sostenibilidad ambiental</li>
-                        <li>Emprendimiento social</li>
-                    </ul>
-                    
-                    <p><strong>Aptitudes destacadas:</strong></p>
-                    <ul>
-                        <li>Razonamiento lógico-matemático</li>
-                        <li>Capacidad de abstracción</li>
-                        <li>Visualización espacial</li>
-                        <li>Adaptabilidad a nuevos entornos</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="card">
-                <h3 class="card-title">Resultados del test de personalidad</h3>
-                <div class="card-content">
-                    <p><strong>Tipo de personalidad:</strong> INTJ - "Arquitecto"</p>
-                    <ul>
-                        <li>Estratega orientada a visiones a largo plazo</li>
-                        <li>Valora el conocimiento y la competencia</li>
-                        <li>Independiente y decidida</li>
-                        <li>Prefiere trabajar con planificación estructurada</li>
-                    </ul>
-                    
-                    <p><strong>Entornos ideales de trabajo:</strong> Proyectos desafiantes con autonomía, espacios que valoren la innovación, ambientes organizados y con objetivos claros.</p>
-                </div>
-            </div>
-        </div>
+<div class="overlay"></div>
+
+<!-- Loader -->
+<div class="loader" id="loader">
+  <div class="spinner"></div>
+  <p>Cargando proyecto de vida...</p>
+</div>
+
+<main class="stage">
+  <!-- Centro -->
+  <div class="center">
+    <h1>Proyecto de Vida</h1>
+    <h2>David Adolfo López Huerta</h2>
+  </div>
+
+  <!-- Islas alrededor -->
+  <div class="ring">
+    <div class="island">
+      <h3>1. Metas a corto y largo plazo</h3>
+      <p><strong>Corto plazo:</strong></p>
+      <ul>
+        <li>Acabar el semestre</li>
+        <li>Acabar el servicio social para el certificado técnico</li>
+        <li>Acabar el bachillerato</li>
+        <li>Ser aceptado en una universidad en computación</li>
+      </ul>
+      <p><strong>Largo plazo:</strong></p>
+      <ul>
+        <li>Graduarme de la universidad</li>
+        <li>Conseguir un trabajo de desarrollador en una empresa bien pagada, invertir</li>
+        <li>Conseguir un trabajo remoto de DevOps bien pagado, invertir</li>
+        <li>Invertir, retirarme, viajar alrededor del mundo, vivir cómodamente</li>
+      </ul>
     </div>
 
-    <script>
-        // Simular carga de página
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                document.querySelector('.loader').style.opacity = '0';
-                document.querySelector('.content').style.display = 'block';
-                
-                setTimeout(function() {
-                    document.querySelector('.loader').style.display = 'none';
-                }, 500);
-            }, 2000); // Tiempo de carga simulado de 2 segundos
-        });
-    </script>
+    <div class="island">
+      <h3>2. ¿Para qué quiero estudiar una carrera?</h3>
+      <p>Para ganar dinero suficiente al trabajar y poder retirarme de una forma en la que siga ganando con inversiones.</p>
+    </div>
+
+    <div class="island">
+      <h3>3. Resultados del test de habilidades</h3>
+      <p>Soy una persona convencional, realista e investigativa.</p>
+    </div>
+
+    <div class="island">
+      <h3>4. Temperamento</h3>
+      <p><strong>Temperamento:</strong></p>
+      <ul><li>Apático</li></ul>
+      <p><strong>Fortalezas:</strong></p>
+      <ul><li>Serenidad y calma en situaciones de presión</li></ul>
+      <p><strong>Debilidades:</strong></p>
+      <ul><li>Desánimo o conformismo</li></ul>
+      <p><strong>Pautas para autoeducarse:</strong></p>
+      <ul>
+        <li>Rodearse de personas activas y positivas</li>
+        <li>Practicar la expresión emocional y comunicación</li>
+      </ul>
+    </div>
+
+    <div class="island">
+      <h3>5. Resultados del test de intereses y aptitudes</h3>
+      <p><strong>Aptitudes más altas:</strong></p>
+      <ul>
+        <li>Cálculo</li>
+        <li>Ejecutivo persuasivo</li>
+        <li>Mecánico constructivo</li>
+      </ul>
+      <p><strong>Intereses más altos:</strong></p>
+      <ul>
+        <li>Cálculo</li>
+        <li>Organización</li>
+        <li>Musical</li>
+      </ul>
+    </div>
+
+    <div class="island">
+      <h3>6. Resultados del test de personalidad</h3>
+      <ul>
+        <li>40% extroversión</li>
+        <li>48% complacencia</li>
+        <li>85% conciencia</li>
+        <li>26% apertura</li>
+        <li>0% neuroticismo</li>
+      </ul>
+    </div>
+  </div>
+</main>
+
+<script>
+  // Loader
+  window.addEventListener('load', () => {
+    setTimeout(()=> document.getElementById('loader').classList.add('hidden'), 1000);
+  });
+
+  // Parallax efecto
+  document.addEventListener("mousemove", (e)=>{
+    const x = (e.clientX / window.innerWidth - 0.5) * 20;
+    const y = (e.clientY / window.innerHeight - 0.5) * 20;
+    document.body.style.backgroundPosition = `${50 - x}% ${50 - y}%`;
+  });
+</script>
 </body>
 </html>
