@@ -9,6 +9,8 @@
     --accent: #00ff88;
     --muted: #d1d5db;
     --glass: rgba(255,255,255,0.06);
+    --ring-radius: 320px; /* distancia de las islas al centro */
+    --island-size: 200px;
   }
 
   * { margin:0; padding:0; box-sizing:border-box; }
@@ -58,22 +60,21 @@
     display:flex; flex-direction:column; align-items:center; justify-content:center;
     text-align:center; border:1px solid rgba(255,255,255,0.1);
     box-shadow:0 10px 30px rgba(0,0,0,0.7);
+    z-index:5;
   }
   .center h1 { color:var(--accent); font-size:20px; letter-spacing:1px; }
   .center h2 { color:white; font-size:14px; margin-top:8px; font-weight:normal; }
 
-  /* Anillo */
+  /* Ring container */
   .ring {
     position:absolute; left:50%; top:50%;
     transform:translate(-50%,-50%);
-    width:700px; height:700px; /* diámetro del círculo */
-    border-radius:50%;
+    width:0; height:0; /* solo sirve como referencia */
   }
 
   /* Islas */
   .island {
-    --size: 200px;
-    width:var(--size); height:var(--size);
+    width:var(--island-size); height:var(--island-size);
     background:var(--glass); border-radius:16px;
     backdrop-filter: blur(6px);
     padding:14px; overflow:auto;
@@ -85,13 +86,13 @@
   }
   .island h3 { color:var(--accent); margin-bottom:6px; font-size:14px; }
 
-  /* Distribución circular de 6 islas */
-  .ring .island:nth-child(1){ transform: rotate(0deg) translate(0,-300px) rotate(0deg); }
-  .ring .island:nth-child(2){ transform: rotate(60deg) translate(0,-300px) rotate(-60deg); }
-  .ring .island:nth-child(3){ transform: rotate(120deg) translate(0,-300px) rotate(-120deg); }
-  .ring .island:nth-child(4){ transform: rotate(180deg) translate(0,-300px) rotate(-180deg); }
-  .ring .island:nth-child(5){ transform: rotate(240deg) translate(0,-300px) rotate(-240deg); }
-  .ring .island:nth-child(6){ transform: rotate(300deg) translate(0,-300px) rotate(-300deg); }
+  /* Distribución circular con ángulos exactos */
+  .ring .island:nth-child(1) { transform: rotate(0deg) translate(0,-var(--ring-radius)) rotate(0deg) translate(-50%,-50%); }
+  .ring .island:nth-child(2) { transform: rotate(60deg) translate(0,-var(--ring-radius)) rotate(-60deg) translate(-50%,-50%); }
+  .ring .island:nth-child(3) { transform: rotate(120deg) translate(0,-var(--ring-radius)) rotate(-120deg) translate(-50%,-50%); }
+  .ring .island:nth-child(4) { transform: rotate(180deg) translate(0,-var(--ring-radius)) rotate(-180deg) translate(-50%,-50%); }
+  .ring .island:nth-child(5) { transform: rotate(240deg) translate(0,-var(--ring-radius)) rotate(-240deg) translate(-50%,-50%); }
+  .ring .island:nth-child(6) { transform: rotate(300deg) translate(0,-var(--ring-radius)) rotate(-300deg) translate(-50%,-50%); }
 
   /* Responsive */
   @media(max-width:768px){
