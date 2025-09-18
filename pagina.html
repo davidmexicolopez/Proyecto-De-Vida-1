@@ -6,8 +6,6 @@
 <title>Proyecto de Vida - David Adolfo López Huerta</title>
 <style>
   :root {
-    --bg-dark: #060606;
-    --bg-light: #0d1a0f;
     --accent: #00ff88;
     --muted: #d1d5db;
     --glass: rgba(255,255,255,0.06);
@@ -16,7 +14,6 @@
   * { margin:0; padding:0; box-sizing:border-box; }
   body, html { height:100%; font-family: Arial, sans-serif; overflow-x:hidden; }
 
-  /* Fondo con parallax */
   body {
     background: url('https://picsum.photos/1600/900?blur=3') no-repeat center center fixed;
     background-size: cover;
@@ -53,6 +50,7 @@
     height:100vh; position:relative; padding:20px;
   }
 
+  /* Centro */
   .center {
     position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
     width:220px; height:220px; border-radius:50%;
@@ -64,32 +62,36 @@
   .center h1 { color:var(--accent); font-size:20px; letter-spacing:1px; }
   .center h2 { color:white; font-size:14px; margin-top:8px; font-weight:normal; }
 
+  /* Anillo */
   .ring {
     position:absolute; left:50%; top:50%;
     transform:translate(-50%,-50%);
-    width:600px; height:600px;
+    width:700px; height:700px; /* diámetro del círculo */
     border-radius:50%;
   }
 
+  /* Islas */
   .island {
     --size: 200px;
-    position:absolute; width:var(--size); height:var(--size);
+    width:var(--size); height:var(--size);
     background:var(--glass); border-radius:16px;
     backdrop-filter: blur(6px);
     padding:14px; overflow:auto;
     border:1px solid rgba(255,255,255,0.1);
     box-shadow:0 6px 20px rgba(0,0,0,0.6);
     color:white; font-size:13px;
+    position:absolute; left:50%; top:50%;
+    transform:translate(-50%,-50%);
   }
   .island h3 { color:var(--accent); margin-bottom:6px; font-size:14px; }
 
-  /* Posicionamiento circular */
-  .ring .island:nth-child(1) { transform: rotate(-90deg) translate(0,-300px) rotate(90deg); }
-  .ring .island:nth-child(2) { transform: rotate(-30deg) translate(0,-300px) rotate(30deg); }
-  .ring .island:nth-child(3) { transform: rotate(30deg) translate(0,-300px) rotate(-30deg); }
-  .ring .island:nth-child(4) { transform: rotate(90deg) translate(0,-300px) rotate(-90deg); }
-  .ring .island:nth-child(5) { transform: rotate(150deg) translate(0,-300px) rotate(-150deg); }
-  .ring .island:nth-child(6) { transform: rotate(210deg) translate(0,-300px) rotate(-210deg); }
+  /* Distribución circular de 6 islas */
+  .ring .island:nth-child(1){ transform: rotate(0deg) translate(0,-300px) rotate(0deg); }
+  .ring .island:nth-child(2){ transform: rotate(60deg) translate(0,-300px) rotate(-60deg); }
+  .ring .island:nth-child(3){ transform: rotate(120deg) translate(0,-300px) rotate(-120deg); }
+  .ring .island:nth-child(4){ transform: rotate(180deg) translate(0,-300px) rotate(-180deg); }
+  .ring .island:nth-child(5){ transform: rotate(240deg) translate(0,-300px) rotate(-240deg); }
+  .ring .island:nth-child(6){ transform: rotate(300deg) translate(0,-300px) rotate(-300deg); }
 
   /* Responsive */
   @media(max-width:768px){
@@ -115,7 +117,7 @@
     <h2>David Adolfo López Huerta</h2>
   </div>
 
-  <!-- Islas alrededor -->
+  <!-- Islas -->
   <div class="ring">
     <div class="island">
       <h3>1. Metas a corto y largo plazo</h3>
@@ -195,7 +197,7 @@
     setTimeout(()=> document.getElementById('loader').classList.add('hidden'), 1000);
   });
 
-  // Parallax efecto
+  // Parallax
   document.addEventListener("mousemove", (e)=>{
     const x = (e.clientX / window.innerWidth - 0.5) * 20;
     const y = (e.clientY / window.innerHeight - 0.5) * 20;
