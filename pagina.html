@@ -1,207 +1,312 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Proyecto de Vida - David Adolfo López Huerta</title>
 <style>
-  :root {
+  :root{
     --accent: #00ff88;
-    --glass: rgba(255,255,255,0.06);
-    --ring-radius: 320px; /* distancia desde el centro */
-    --island-size: 200px;
+    --glass: rgba(255,255,255,0.04);
+    --muted: #d0d7df;
+    --center-size: 220px; /* tamaño del centro (puedes cambiarlo) */
+    --island-w: 220px;    /* tamaño base de isla (se adapta con CSS) */
   }
 
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body, html { height:100%; font-family: Arial, sans-serif; overflow-x:hidden; }
-
-  body {
-    background: url('https://picsum.photos/1600/900?blur=3') no-repeat center center fixed;
-    background-size: cover;
+  /* reset */
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: url('https://picsum.photos/1600/900?blur=3') center/cover fixed no-repeat;
+    color:#fff;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow-x:hidden;
   }
 
-  .overlay {
-    position: fixed; inset:0;
-    background: rgba(0,0,0,0.6);
+  /* overlay blur para fondo */
+  .overlay{
+    position:fixed; inset:0;
+    background: linear-gradient(180deg, rgba(0,0,0,0.52), rgba(0,0,0,0.6));
     backdrop-filter: blur(4px);
-    z-index: -1;
+    z-index:0;
   }
 
-  /* Loader */
-  .loader {
-    position: fixed; inset:0;
-    display:flex; align-items:center; justify-content:center;
-    background: black; z-index:10000;
-    flex-direction:column;
-    transition: opacity .6s ease, visibility .6s ease;
+  /* loader verde/negro minimalista */
+  .loader{
+    position:fixed; inset:0; display:flex; align-items:center; justify-content:center;
+    background:#000; z-index:9999; flex-direction:column;
+    transition:opacity .45s ease, visibility .45s;
   }
-  .loader.hidden { opacity:0; visibility:hidden; }
-  .spinner {
-    border:6px solid rgba(0,255,136,0.2);
-    border-top:6px solid var(--accent);
-    border-radius:50%; width:60px; height:60px;
+  .loader.hidden{opacity:0; visibility:hidden}
+  .spinner{
+    width:64px; height:64px; border-radius:50%;
+    border:6px solid rgba(0,255,136,0.15);
+    border-top-color:var(--accent);
     animation:spin 1s linear infinite;
   }
-  @keyframes spin { to { transform:rotate(360deg);} }
-  .loader p { color:var(--accent); margin-top:12px; font-weight:bold; }
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .loader .msg{ color:var(--accent); margin-top:10px; font-weight:700; letter-spacing:1px }
 
-  /* Escenario */
-  .stage {
-    display:flex; align-items:center; justify-content:center;
-    height:100vh; position:relative; padding:20px;
+  /* stage como referencia */
+  .stage{
+    position:relative; width:100%; height:100vh; display:block;
+    z-index:1; overflow:hidden;
   }
 
-  /* Centro */
-  .center {
-    position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
-    width:220px; height:220px; border-radius:50%;
-    background:var(--glass); backdrop-filter: blur(8px);
-    display:flex; flex-direction:column; align-items:center; justify-content:center;
-    text-align:center; border:1px solid rgba(255,255,255,0.1);
-    box-shadow:0 10px 30px rgba(0,0,0,0.7);
-    z-index:5;
-  }
-  .center h1 { color:var(--accent); font-size:20px; letter-spacing:1px; }
-  .center h2 { color:white; font-size:14px; margin-top:8px; font-weight:normal; }
-
-  /* Ring container */
-  .ring {
-    position:absolute; left:50%; top:50%;
-    width:0; height:0; /* solo referencia */
-  }
-
-  /* Islas */
-  .island {
-    width:var(--island-size); height:var(--island-size);
-    background:var(--glass); border-radius:16px;
+  /* centro (medallón) */
+  .center{
+    position:fixed;
+    left:50%; top:50%;
+    width:var(--center-size); height:var(--center-size);
+    transform:translate(-50%,-50%);
+    border-radius:50%;
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    border:1px solid rgba(0,255,136,0.08);
+    display:flex; align-items:center; justify-content:center; flex-direction:column;
+    text-align:center; padding:16px;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.6);
+    z-index:50;
     backdrop-filter: blur(6px);
-    padding:14px; overflow:auto;
-    border:1px solid rgba(255,255,255,0.1);
-    box-shadow:0 6px 20px rgba(0,0,0,0.6);
-    color:white; font-size:13px;
-    position:absolute; left:0; top:0;
-    transform-origin: 0 0; /* importante para rotar desde el centro */
   }
-  .island h3 { color:var(--accent); margin-bottom:6px; font-size:14px; }
+  .center h1{ color:var(--accent); font-size:18px; letter-spacing:1.6px; margin-bottom:6px }
+  .center h2{ color:var(--muted); font-size:13px; font-weight:600; text-transform:uppercase; letter-spacing:2px }
 
-  /* Distribución circular en 6 partes */
-  .ring .island:nth-child(1){ transform: rotate(0deg) translate(0, -var(--ring-radius)); }
-  .ring .island:nth-child(2){ transform: rotate(60deg) translate(0, -var(--ring-radius)); }
-  .ring .island:nth-child(3){ transform: rotate(120deg) translate(0, -var(--ring-radius)); }
-  .ring .island:nth-child(4){ transform: rotate(180deg) translate(0, -var(--ring-radius)); }
-  .ring .island:nth-child(5){ transform: rotate(240deg) translate(0, -var(--ring-radius)); }
-  .ring .island:nth-child(6){ transform: rotate(300deg) translate(0, -var(--ring-radius)); }
+  /* contenedor de islas (solo semántico) */
+  .ring{ position:relative; z-index:20; }
 
-  /* Responsive */
-  @media(max-width:768px){
-    .ring{ position:relative; width:100%; height:auto; transform:none; display:flex; flex-wrap:wrap; justify-content:center; gap:12px; }
-    .ring .island{ position:relative; transform:none; width:45%; height:auto; }
-    .center{ position:relative; transform:none; margin-bottom:20px; }
+  /* islas: por defecto usaremos position:fixed y JS las colocará */
+  .island{
+    position:fixed;
+    width: clamp(160px, 18vw, 240px);
+    max-height: 240px;
+    padding:12px;
+    border-radius:12px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.04);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    color:var(--muted); font-size:13px; line-height:1.25;
+    overflow:auto;
+    transition: left .32s cubic-bezier(.2,.9,.3,1), top .32s cubic-bezier(.2,.9,.3,1), transform .18s;
+    z-index:30;
+    touch-action:manipulation;
+  }
+  .island:hover{ transform: translateY(-6px) scale(1.02) }
+  .island h3{ color:var(--accent); font-size:14px; margin-bottom:6px }
+
+  /* focus accesible */
+  .island:focus{ outline:3px solid rgba(0,255,136,0.08); transform:scale(1.02); }
+
+  /* stacked (móvil) - se activa via JS cuando el ancho es pequeño */
+  .ring.stacked{
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    align-items:center;
+    margin-top: calc(var(--center-size) + 18px);
+    padding:18px 8px;
+  }
+  .ring.stacked .island{
+    position:relative;
+    width: min(92%, 560px);
+    max-height:none;
+    left:auto; top:auto; transform:none;
+  }
+
+  /* responsive tweaks */
+  @media (max-width:720px){
+    :root{ --center-size:170px; }
+    .center h1{ font-size:16px } .center h2{ font-size:12px }
   }
 </style>
 </head>
 <body>
-<div class="overlay"></div>
+  <div class="overlay" aria-hidden="true"></div>
 
-<!-- Loader -->
-<div class="loader" id="loader">
-  <div class="spinner"></div>
-  <p>Cargando proyecto de vida...</p>
-</div>
-
-<main class="stage">
-  <!-- Centro -->
-  <div class="center">
-    <h1>Proyecto de Vida</h1>
-    <h2>David Adolfo López Huerta</h2>
+  <!-- Loader -->
+  <div class="loader" id="loader" role="status" aria-live="polite">
+    <div class="spinner" aria-hidden="true"></div>
+    <div class="msg">CARGANDO PROYECTO DE VIDA</div>
   </div>
 
-  <!-- Islas -->
-  <div class="ring">
-    <div class="island">
-      <h3>1. Metas a corto y largo plazo</h3>
-      <p><strong>Corto plazo:</strong></p>
-      <ul>
-        <li>Acabar el semestre</li>
-        <li>Acabar el servicio social para el certificado técnico</li>
-        <li>Acabar el bachillerato</li>
-        <li>Ser aceptado en una universidad en computación</li>
-      </ul>
-      <p><strong>Largo plazo:</strong></p>
-      <ul>
-        <li>Graduarme de la universidad</li>
-        <li>Conseguir un trabajo de desarrollador en una empresa bien pagada, invertir</li>
-        <li>Conseguir un trabajo remoto de DevOps bien pagado, invertir</li>
-        <li>Invertir, retirarme, viajar alrededor del mundo, vivir cómodamente</li>
-      </ul>
+  <main class="stage" id="stage">
+    <div class="center" id="center" role="banner" aria-label="David Adolfo López Huerta - Proyecto de Vida">
+      <h1>Proyecto de Vida</h1>
+      <h2>David Adolfo López Huerta</h2>
     </div>
 
-    <div class="island">
-      <h3>2. ¿Para qué quiero estudiar una carrera?</h3>
-      <p>Para ganar dinero suficiente al trabajar y poder retirarme de una forma en la que siga ganando con inversiones.</p>
-    </div>
+    <div class="ring" id="ring" aria-hidden="false">
+      <!-- 1 -->
+      <section class="island" tabindex="0" aria-labelledby="c1">
+        <h3 id="c1">1.- Metas a corto y largo plazo</h3>
+        <p><strong>Corto plazo:</strong></p>
+        <ul>
+          <li>Acabar el semestre</li>
+          <li>Acabar el servicio social para el certificado técnico</li>
+          <li>Acabar el bachillerato</li>
+          <li>Ser aceptado en una universidad en computación</li>
+        </ul>
+        <p><strong>Largo plazo:</strong></p>
+        <ul>
+          <li>Graduarme de la universidad</li>
+          <li>Conseguir un trabajo de desarrollador en una empresa bien pagada, invertir.</li>
+          <li>Conseguir un trabajo remoto de DevOps bien pagado, invertir.</li>
+          <li>Invertir, retirarme, viajar alrededor del mundo, vivir cómodamente</li>
+        </ul>
+      </section>
 
-    <div class="island">
-      <h3>3. Resultados del test de habilidades</h3>
-      <p>Soy una persona convencional, realista e investigativa.</p>
-    </div>
+      <!-- 2 -->
+      <section class="island" tabindex="0" aria-labelledby="c2">
+        <h3 id="c2">2.- ¿Para qué quiero estudiar una carrera?</h3>
+        <p>Para ganar dinero suficiente al trabajar y poder retirarme de una forma en la que siga ganando con inversiones.</p>
+      </section>
 
-    <div class="island">
-      <h3>4. Temperamento</h3>
-      <p><strong>Temperamento:</strong></p>
-      <ul><li>Apático</li></ul>
-      <p><strong>Fortalezas:</strong></p>
-      <ul><li>Serenidad y calma en situaciones de presión</li></ul>
-      <p><strong>Debilidades:</strong></p>
-      <ul><li>Desánimo o conformismo</li></ul>
-      <p><strong>Pautas para autoeducarse:</strong></p>
-      <ul>
-        <li>Rodearse de personas activas y positivas</li>
-        <li>Practicar la expresión emocional y comunicación</li>
-      </ul>
-    </div>
+      <!-- 3 -->
+      <section class="island" tabindex="0" aria-labelledby="c3">
+        <h3 id="c3">3.- Resultados del test de habilidades</h3>
+        <p>Soy una persona convencional, realista e investigativa.</p>
+      </section>
 
-    <div class="island">
-      <h3>5. Resultados del test de intereses y aptitudes</h3>
-      <p><strong>Aptitudes más altas:</strong></p>
-      <ul>
-        <li>Cálculo</li>
-        <li>Ejecutivo persuasivo</li>
-        <li>Mecánico constructivo</li>
-      </ul>
-      <p><strong>Intereses más altos:</strong></p>
-      <ul>
-        <li>Cálculo</li>
-        <li>Organización</li>
-        <li>Musical</li>
-      </ul>
-    </div>
+      <!-- 4 -->
+      <section class="island" tabindex="0" aria-labelledby="c4">
+        <h3 id="c4">4.- Temperamento: fortalezas, debilidades y pautas</h3>
+        <p><strong>Temperamento:</strong></p>
+        <ul><li>Apático</li></ul>
+        <p><strong>Fortalezas:</strong></p>
+        <ul><li>Serenidad y calma en situaciones de presión</li></ul>
+        <p><strong>Debilidades:</strong></p>
+        <ul><li>Desánimo o conformismo</li></ul>
+        <p><strong>Pautas para autoeducarse:</strong></p>
+        <ul>
+          <li>Rodearse de personas activas y positivas</li>
+          <li>Practicar la expresión emocional y comunicación</li>
+        </ul>
+      </section>
 
-    <div class="island">
-      <h3>6. Resultados del test de personalidad</h3>
-      <ul>
-        <li>40% extroversión</li>
-        <li>48% complacencia</li>
-        <li>85% conciencia</li>
-        <li>26% apertura</li>
-        <li>0% neuroticismo</li>
-      </ul>
+      <!-- 5 -->
+      <section class="island" tabindex="0" aria-labelledby="c5">
+        <h3 id="c5">5.- Resultados del test de intereses y aptitudes</h3>
+        <p><strong>Resultados de aptitudes más altos:</strong></p>
+        <ul>
+          <li>Cálculo</li>
+          <li>Ejecutivo persuasivo</li>
+          <li>Mecánico constructivo</li>
+        </ul>
+        <p><strong>Resultados de intereses más altos:</strong></p>
+        <ul>
+          <li>Cálculo</li>
+          <li>Organización</li>
+          <li>Musical</li>
+        </ul>
+      </section>
+
+      <!-- 6 -->
+      <section class="island" tabindex="0" aria-labelledby="c6">
+        <h3 id="c6">6.- Resultados del test de personalidad</h3>
+        <ul>
+          <li>40% extroversión</li>
+          <li>48% complacencia</li>
+          <li>85% conciencia</li>
+          <li>26% apertura</li>
+          <li>0% neuroticismo</li>
+        </ul>
+      </section>
     </div>
-  </div>
-</main>
+  </main>
 
 <script>
-  // Loader
+  // loader hide
   window.addEventListener('load', () => {
-    setTimeout(()=> document.getElementById('loader').classList.add('hidden'), 1000);
+    setTimeout(()=> {
+      document.getElementById('loader').classList.add('hidden');
+    }, 700);
+    // initial position after load (give time to compute sizes)
+    setTimeout(positionIslands, 80);
   });
 
-  // Parallax
-  document.addEventListener("mousemove", (e)=>{
-    const x = (e.clientX / window.innerWidth - 0.5) * 20;
-    const y = (e.clientY / window.innerHeight - 0.5) * 20;
+  // Parallax background (sutil)
+  document.addEventListener('mousemove', (e)=>{
+    const x = (e.clientX / window.innerWidth - 0.5) * 12; // menor movimiento
+    const y = (e.clientY / window.innerHeight - 0.5) * 12;
     document.body.style.backgroundPosition = `${50 - x}% ${50 - y}%`;
   });
+
+  const ring = document.getElementById('ring');
+  const center = document.getElementById('center');
+
+  // Debounce util
+  function debounce(fn, t=120){ let id; return (...a)=>{ clearTimeout(id); id = setTimeout(()=>fn(...a), t); } }
+
+  // Main positioning function: usa trigonometría para colocar cada isla alrededor del centro
+  function positionIslands(){
+    const islands = Array.from(document.querySelectorAll('.ring .island'));
+    if (!islands.length) return;
+
+    // Fallback stacked layout para móviles (ancho pequeño)
+    const stackBreakpoint = 720;
+    if (window.innerWidth <= stackBreakpoint){
+      ring.classList.add('stacked');
+      // limpiar posiciones previas
+      islands.forEach(el => {
+        el.style.left = '';
+        el.style.top = '';
+      });
+      return;
+    } else {
+      ring.classList.remove('stacked');
+    }
+
+    // Coordenadas del centro (viewport)
+    const cRect = center.getBoundingClientRect();
+    const centerX = cRect.left + cRect.width/2;
+    const centerY = cRect.top + cRect.height/2;
+
+    // Calcula radio dinámico según pantalla y tamaño de islas para evitar solapamientos
+    // toma la primera isla como referencia de tamaño (puede variar)
+    const ref = islands[0].getBoundingClientRect();
+    const islandMax = Math.max(ref.width, ref.height);
+    // radio base relativo al tamaño de la ventana
+    let radius = Math.min(window.innerWidth, window.innerHeight) * 0.32; // 32% del menor lado
+    // garantizar que las islas queden fuera del borde de la central + gap
+    const minRadius = Math.max((cRect.width/2) + (islandMax/2) + 36, 140);
+    if (radius < minRadius) radius = minRadius;
+    // evitar que el radio sea demasiado grande para pantallas muy anchas
+    radius = Math.min(radius, Math.max(200, window.innerWidth * 0.45));
+
+    // Alineación: inicia en -90° (arriba) y distribuye uniformemente
+    const startAngle = -Math.PI/2;
+    const step = (2 * Math.PI) / islands.length;
+
+    islands.forEach((el, i) => {
+      // volver a calcular tamaño real en caso de wrap
+      const r = el.getBoundingClientRect();
+      const angle = startAngle + i * step;
+      const x = centerX + radius * Math.cos(angle) - (r.width / 2);
+      const y = centerY + radius * Math.sin(angle) - (r.height / 2);
+
+      // Limitar para no salirse del viewport (márgenes)
+      const margin = 10;
+      const clampedX = Math.max(margin, Math.min(x, window.innerWidth - r.width - margin));
+      const clampedY = Math.max(margin, Math.min(y, window.innerHeight - r.height - margin));
+
+      // Aplicar (posición fija)
+      el.style.position = 'fixed';
+      el.style.left = Math.round(clampedX) + 'px';
+      el.style.top  = Math.round(clampedY) + 'px';
+      el.style.zIndex = 30;
+    });
+
+    // asegurar centro encima
+    center.style.zIndex = 60;
+  }
+
+  // recalcular al redimensionar, con debounce
+  window.addEventListener('resize', debounce(positionIslands, 120));
+  window.addEventListener('orientationchange', debounce(positionIslands, 160));
+  // recalcular si cambia el zoom/layout después de fuentes u otro
+  new ResizeObserver(debounce(positionIslands, 120)).observe(document.body);
 </script>
 </body>
 </html>
