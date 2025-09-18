@@ -7,9 +7,8 @@
 <style>
   :root {
     --accent: #00ff88;
-    --muted: #d1d5db;
     --glass: rgba(255,255,255,0.06);
-    --ring-radius: 320px; /* distancia de las islas al centro */
+    --ring-radius: 320px; /* distancia desde el centro */
     --island-size: 200px;
   }
 
@@ -68,8 +67,7 @@
   /* Ring container */
   .ring {
     position:absolute; left:50%; top:50%;
-    transform:translate(-50%,-50%);
-    width:0; height:0; /* solo sirve como referencia */
+    width:0; height:0; /* solo referencia */
   }
 
   /* Islas */
@@ -81,18 +79,18 @@
     border:1px solid rgba(255,255,255,0.1);
     box-shadow:0 6px 20px rgba(0,0,0,0.6);
     color:white; font-size:13px;
-    position:absolute; left:50%; top:50%;
-    transform:translate(-50%,-50%);
+    position:absolute; left:0; top:0;
+    transform-origin: 0 0; /* importante para rotar desde el centro */
   }
   .island h3 { color:var(--accent); margin-bottom:6px; font-size:14px; }
 
-  /* Distribución circular con ángulos exactos */
-  .ring .island:nth-child(1) { transform: rotate(0deg) translate(0,-var(--ring-radius)) rotate(0deg) translate(-50%,-50%); }
-  .ring .island:nth-child(2) { transform: rotate(60deg) translate(0,-var(--ring-radius)) rotate(-60deg) translate(-50%,-50%); }
-  .ring .island:nth-child(3) { transform: rotate(120deg) translate(0,-var(--ring-radius)) rotate(-120deg) translate(-50%,-50%); }
-  .ring .island:nth-child(4) { transform: rotate(180deg) translate(0,-var(--ring-radius)) rotate(-180deg) translate(-50%,-50%); }
-  .ring .island:nth-child(5) { transform: rotate(240deg) translate(0,-var(--ring-radius)) rotate(-240deg) translate(-50%,-50%); }
-  .ring .island:nth-child(6) { transform: rotate(300deg) translate(0,-var(--ring-radius)) rotate(-300deg) translate(-50%,-50%); }
+  /* Distribución circular en 6 partes */
+  .ring .island:nth-child(1){ transform: rotate(0deg) translate(0, -var(--ring-radius)); }
+  .ring .island:nth-child(2){ transform: rotate(60deg) translate(0, -var(--ring-radius)); }
+  .ring .island:nth-child(3){ transform: rotate(120deg) translate(0, -var(--ring-radius)); }
+  .ring .island:nth-child(4){ transform: rotate(180deg) translate(0, -var(--ring-radius)); }
+  .ring .island:nth-child(5){ transform: rotate(240deg) translate(0, -var(--ring-radius)); }
+  .ring .island:nth-child(6){ transform: rotate(300deg) translate(0, -var(--ring-radius)); }
 
   /* Responsive */
   @media(max-width:768px){
